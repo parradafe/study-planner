@@ -22,6 +22,7 @@ export default function ListItem({
       {/* Checkbox */}
       <button
         onClick={onToggle}
+        disabled
         className={`h-5 w-5 rounded-sm border-2 transition-all ${
           completed
             ? "border-primary bg-primary"
