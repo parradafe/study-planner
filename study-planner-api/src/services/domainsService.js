@@ -75,9 +75,30 @@ class DomainsService {
   /**
    * Toggle completion status
    */
+  /**
+   * Toggle completion status
+   */
   async toggleDomainCompletion(id) {
     await this.getDomainById(id); // Verify exists
     return await domainsRepository.toggleCompletion(id);
+  }
+
+  /**
+   * Get domain with its topics
+   */
+  async getDomainWithTopics(id) {
+    const domain = await domainsRepository.findByIdWithTopics(id);
+    if (!domain) {
+      throw new Error('Domain not found');
+    }
+    return domain;
+  }
+
+  /**
+   * Get all domains with their topics
+   */
+  async getAllDomainsWithTopics() {
+    return await domainsRepository.findAllWithTopics();
   }
 }
 

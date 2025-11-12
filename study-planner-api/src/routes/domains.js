@@ -5,10 +5,17 @@ const router = express.Router();
 
 /**
  * GET /api/domains
- * Get all domains
+ * Get all domains (optionally with topics)
  */
 router.get('/', async (req, res) => {
   try {
+    const { include_topics } = req.query;
+    
+    if (include_topics === 'true') {
+      const domains = await domainsService.getAllDomainsWithTopics();
+      return res.json(domains);
+    }
+    
     const domains = await domainsService.getAllDomains();
     res.json(domains);
   } catch (error) {
@@ -18,10 +25,17 @@ router.get('/', async (req, res) => {
 
 /**
  * GET /api/domains/:id
- * Get domain by ID
+ * Get domain by ID (optionally with topics)
  */
 router.get('/:id', async (req, res) => {
   try {
+    const { include_topics } = req.query;
+    
+    if (include_topics === 'true') {
+      const domain = await domainsService.getDomainWithTopics(req.params.id);
+      return res.json(domain);
+    }
+    
     const domain = await domainsService.getDomainById(req.params.id);
     res.json(domain);
   } catch (error) {

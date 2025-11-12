@@ -13,11 +13,16 @@ CREATE TABLE IF NOT EXISTS domains (
 -- Create Topics table
 CREATE TABLE IF NOT EXISTS topics (
     id SERIAL PRIMARY KEY,
+    domain_id INTEGER NOT NULL,
     time VARCHAR(50) NOT NULL,
     title VARCHAR(255) NOT NULL,
     completed BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_domain
+        FOREIGN KEY(domain_id)
+        REFERENCES domains(id)
+        ON DELETE CASCADE
 );
 
 -- Create Sessions table
@@ -40,12 +45,6 @@ CREATE TABLE IF NOT EXISTS last_studied (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_domains_completed ON domains(completed);
-CREATE INDEX IF NOT EXISTS idx_topics_completed ON topics(completed);
-CREATE INDEX IF NOT EXISTS idx_sessions_completed ON sessions(completed);
-CREATE INDEX IF NOT EXISTS idx_last_studied_completed ON last_studied(completed);
-
 -- Insert sample data
 INSERT INTO domains (time, title, completed) VALUES
     ('18:00', 'Call mom', false),
@@ -54,10 +53,12 @@ INSERT INTO domains (time, title, completed) VALUES
     ('16:45', 'Team meeting', false)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO topics (time, title, completed) VALUES
-    ('09:15', 'JavaScript basics', false),
-    ('13:00', 'React hooks', true),
-    ('15:30', 'TypeScript types', false)
+INSERT INTO topics (domain_id, time, title, completed) VALUES
+    (2, '09:15', 'JavaScript basics', false),
+    (2, '13:00', 'React hooks', true),
+    (2, '15:30', 'TypeScript types', false),
+    (3, '11:00', 'Research documentation', false),
+    (3, '14:45', 'Draft outline', true)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO sessions (time, title, completed) VALUES

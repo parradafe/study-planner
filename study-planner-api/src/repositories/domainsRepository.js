@@ -65,6 +65,57 @@ class DomainsRepository {
     );
     return result.rows[0];
   }
+
+  /**
+   * Get domain with its topics
+   */
+  async findByIdWithTopics(id) {
+    const domainResult = await pool.query(
+      'SELECT id, time, title, completed, created_at, updated_at FROM domains WHERE id = $1',
+      [id]
+    );
+    
+    if (!domainResult.rows[0]) {
+      return null;
+    }
+
+    const topicsResult = await pool.query(
+      'SELECT id, domain_id, time, title, completed, created_at, updated_at FROM topics WHERE domain_id = $1 ORDER BY id ASC',
+      [id]
+    );
+
+    return {
+      ...domainResult.rows[0],
+      topics: topicsResult.rows,
+    };
+  }
+
+  /**
+   * Get all domains with their topics
+   */
+  async findAllWithTopics() {
+    const domainsResult = await pool.query(
+      'SELECT id, time, title, completed, created_at, updated_at FROM domains ORDER BY id ASC'
+    );
+
+    const domains = domainsResult.rows;
+
+    // Get topics for all domains
+    const domainsWithTopics = await Promise.all(
+      domains.map(async (domain) => {
+        const topicsResult = await pool.query(
+          'SELECT id, domain_id, time, title, completed, created_at, updated_at FROM topics WHERE domain_id = $1 ORDER BY id ASC',
+          [domain.id]
+        );
+        return {
+          ...domain,
+          topics: topicsResult.rows,
+        };
+      })
+    );
+
+    return domainsWithTopics;
+  }
 }
 
 export default new DomainsRepository();

@@ -70,16 +70,21 @@ npm start
 
 ### Domains
 - `GET /api/domains` - Get all domains
+  - Query param: `?include_topics=true` to include topics
 - `GET /api/domains/:id` - Get domain by ID
+  - Query param: `?include_topics=true` to include topics
 - `POST /api/domains` - Create new domain
 - `PUT /api/domains/:id` - Update domain
-- `DELETE /api/domains/:id` - Delete domain
+- `DELETE /api/domains/:id` - Delete domain (cascades to topics)
 - `PATCH /api/domains/:id/toggle` - Toggle completion status
 
 ### Topics
+**Note:** Topics are related to Domains (one domain can have multiple topics)
+
 - `GET /api/topics` - Get all topics
+  - Query param: `?domain_id=X` to filter by domain
 - `GET /api/topics/:id` - Get topic by ID
-- `POST /api/topics` - Create new topic
+- `POST /api/topics` - Create new topic (requires `domain_id` in body)
 - `PUT /api/topics/:id` - Update topic
 - `DELETE /api/topics/:id` - Delete topic
 - `PATCH /api/topics/:id/toggle` - Toggle completion status
@@ -114,16 +119,74 @@ Content-Type: application/json
 }
 ```
 
-### Response
+### Create Topic (with domain relationship)
+```bash
+POST /api/topics
+Content-Type: application/json
+
+{
+  "domain_id": 2,
+  "time": "09:15",
+  "title": "JavaScript basics",
+  "completed": false
+}
+```
+
+### Get Domain with Topics
+```bash
+GET /api/domains/2?include_topics=true
+```
+
+### Response (Domain with Topics)
 ```json
 {
-  "id": 1,
-  "time": "18:00",
-  "title": "Call mom",
-  "completed": false,
+  "id": 2,
+  "time": "14:30",
+  "title": "Review math concepts",
+  "completed": true,
   "created_at": "2025-11-12T10:00:00.000Z",
-  "updated_at": "2025-11-12T10:00:00.000Z"
+  "updated_at": "2025-11-12T10:00:00.000Z",
+  "topics": [
+    {
+      "id": 1,
+      "domain_id": 2,
+      "time": "09:15",
+      "title": "JavaScript basics",
+      "completed": false,
+      "created_at": "2025-11-12T10:05:00.000Z",
+      "updated_at": "2025-11-12T10:05:00.000Z"
+    },
+    {
+      "id": 2,
+      "domain_id": 2,
+      "time": "13:00",
+      "title": "React hooks",
+      "completed": true,
+      "created_at": "2025-11-12T10:06:00.000Z",
+      "updated_at": "2025-11-12T10:06:00.000Z"
+    }
+  ]
 }
+```
+
+### Get Topics by Domain
+```bash
+GET /api/topics?domain_id=2
+```
+
+### Response
+```json
+[
+  {
+    "id": 1,
+    "domain_id": 2,
+    "time": "09:15",
+    "title": "JavaScript basics",
+    "completed": false,
+    "created_at": "2025-11-12T10:05:00.000Z",
+    "updated_at": "2025-11-12T10:05:00.000Z"
+  }
+]
 ```
 
 ## Environment Variables
