@@ -1,0 +1,4 @@
+### get all domains
+
+GET http://localhost:3001/api/domains
+Content-Type: application/json

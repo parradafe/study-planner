@@ -9,8 +9,9 @@ class DomainsRepository {
    */
   async findAll() {
     const result = await pool.query(
-      'SELECT id, time, title, completed, created_at, updated_at FROM domains ORDER BY id ASC'
+      'SELECT * FROM domains ORDER BY id ASC'
     );
+
     return result.rows;
   }
 

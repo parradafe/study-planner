@@ -1,22 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ListItem from "./components/ListItem";
-
-interface DomainItem {
-  id: number;
-  time: string;
-  title: string;
-  completed: boolean;
-}
+import { DomainItem } from "./interfaces/domainItem.interface";
+import { useApi } from "./hooks/useApi";
 
 export default function Home() {
-  const [domains, setDomains] = useState<DomainItem[]>([
-    { id: 1, time: "18:00", title: "Call mom", completed: false },
-    { id: 2, time: "14:30", title: "Review math concepts", completed: true },
-    { id: 3, time: "10:00", title: "Finish project proposal", completed: false },
-    { id: 4, time: "16:45", title: "Team meeting", completed: false },
-  ]);
+  const [domains, setDomains] = useState<DomainItem[]>([]);
 
   const [topics, setTopics] = useState<DomainItem[]>([
     { id: 1, time: "09:15", title: "JavaScript basics", completed: false },
@@ -37,6 +27,16 @@ export default function Home() {
 
   const [newDomainTitle, setNewDomainTitle] = useState("");
   const [newTopicTitle, setNewTopicTitle] = useState("");
+
+  const { getDomains } = useApi();
+
+  useEffect(() => {
+    const requester = async () => {
+      const apiDomains = await getDomains();
+      setDomains(apiDomains);
+    };
+    requester();
+  }, []);
 
   const generateRandomTime = () => {
     const hours = Math.floor(Math.random() * 24);

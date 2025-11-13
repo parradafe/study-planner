@@ -9,9 +9,9 @@ const { Pool } = pg;
  * PostgreSQL connection pool configuration
  */
 const pool = new Pool({
-  host: process.env.DB_HOST || 'localhost',
+  host: process.env.DB_HOST || 'postgresql',
   port: process.env.DB_PORT || 5432,
-  database: process.env.DB_NAME || 'study_planner',
+  database: process.env.DB_NAME || 'postgres',
   user: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD,
   max: 20,
