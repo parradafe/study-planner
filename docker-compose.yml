@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  study-api:
+    image: node
+    volumes:
+      - ./study-planner-api:/usr/src/app
+    working_dir: /usr/src/app
+    command: ["npm", "run","dev"]
+
+  study-app:
+    build: ./study-planner-app
+    user: "node"
+    ports:
+      - "3000:3000"
+    command: ["node", "server.js", "--", "-H", "0.0.0.0"]
+
+  postgresql:
+    image: postgres
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    environment:
+      - POSTGRES_PASSWORD=compumundohipermegared
+      - POSTGRES_USER=vicejr
+      - POSTGRES_DB=studyplanner
+
+volumes:
+  postgres_data:
