@@ -90,20 +90,29 @@ npm start
 - `PATCH /api/topics/:id/toggle` - Toggle completion status
 
 ### Sessions
+**Note:** Sessions use spaced repetition algorithm (SM-2) for intelligent study planning
+
 - `GET /api/sessions` - Get all sessions
+- `GET /api/sessions/due` - Get sessions due for review today
 - `GET /api/sessions/:id` - Get session by ID
 - `POST /api/sessions` - Create new session
+  - Body: `{ name, difficultyScore?, interval?, nextReviewDate?, reviewCount? }`
 - `PUT /api/sessions/:id` - Update session
 - `DELETE /api/sessions/:id` - Delete session
-- `PATCH /api/sessions/:id/toggle` - Toggle completion status
+- `PATCH /api/sessions/:id/review` - Mark session as reviewed
+  - Body: `{ difficulty: 'easy' | 'normal' | 'hard' }`
 
-### Last Studied
-- `GET /api/last-studied` - Get all last studied items
-- `GET /api/last-studied/:id` - Get last studied item by ID
-- `POST /api/last-studied` - Create new last studied item
-- `PUT /api/last-studied/:id` - Update last studied item
-- `DELETE /api/last-studied/:id` - Delete last studied item
-- `PATCH /api/last-studied/:id/toggle` - Toggle completion status
+### Spaced Repetition
+**Note:** State is now persisted in PostgreSQL (`spaced_repetition_topics` table)
+
+- `POST /api/spaced-repetition/topics` - Load topics into the spaced repetition engine
+  - Body: `{ topics: ["Topic 1", "Topic 2", ...] }`
+- `GET /api/spaced-repetition/recommendations` - Get complete recommendations
+  - Returns: suggested for current session, topics for today, topics for next session, most/least difficult topics
+- `GET /api/spaced-repetition/suggested` - Get suggested topics for current session
+  - Query param: `?max=5` (default: 5)
+- `POST /api/spaced-repetition/save` - Save engine state to database
+- `POST /api/spaced-repetition/load` - Load engine state from database
 
 ## Request/Response Examples
 

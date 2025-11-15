@@ -3,6 +3,10 @@ import sessionsService from '../services/sessionsService.js';
 
 const router = express.Router();
 
+/**
+ * GET /api/sessions
+ * Get all sessions
+ */
 router.get('/', async (req, res) => {
   try {
     const sessions = await sessionsService.getAllSessions();
@@ -12,6 +16,23 @@ router.get('/', async (req, res) => {
   }
 });
 
+/**
+ * GET /api/sessions/due
+ * Get sessions that are due for review today
+ */
+router.get('/due', async (req, res) => {
+  try {
+    const sessions = await sessionsService.getSessionsDueForReview();
+    res.json(sessions);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/sessions/:id
+ * Get session by ID
+ */
 router.get('/:id', async (req, res) => {
   try {
     const session = await sessionsService.getSessionById(req.params.id);
@@ -21,6 +42,11 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+/**
+ * POST /api/sessions
+ * Create new session
+ * Body: { name, lastReviewed?, difficultyScore?, interval?, nextReviewDate?, reviewCount? }
+ */
 router.post('/', async (req, res) => {
   try {
     const session = await sessionsService.createSession(req.body);
@@ -30,6 +56,11 @@ router.post('/', async (req, res) => {
   }
 });
 
+/**
+ * PUT /api/sessions/:id
+ * Update session
+ * Body: { name?, lastReviewed?, difficultyScore?, interval?, nextReviewDate?, reviewCount? }
+ */
 router.put('/:id', async (req, res) => {
   try {
     const session = await sessionsService.updateSession(req.params.id, req.body);
@@ -39,6 +70,10 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+/**
+ * DELETE /api/sessions/:id
+ * Delete session
+ */
 router.delete('/:id', async (req, res) => {
   try {
     await sessionsService.deleteSession(req.params.id);
@@ -48,12 +83,18 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.patch('/:id/toggle', async (req, res) => {
+/**
+ * PATCH /api/sessions/:id/review
+ * Mark session as reviewed with difficulty level
+ * Body: { difficulty: 'easy' | 'normal' | 'hard' }
+ */
+router.patch('/:id/review', async (req, res) => {
   try {
-    const session = await sessionsService.toggleSessionCompletion(req.params.id);
+    const { difficulty = 'normal' } = req.body;
+    const session = await sessionsService.markSessionAsReviewed(req.params.id, difficulty);
     res.json(session);
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 });
 

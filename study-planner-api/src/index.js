@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import domainsRoutes from './routes/domains.js';
 import topicsRoutes from './routes/topics.js';
 import sessionsRoutes from './routes/sessions.js';
-import lastStudiedRoutes from './routes/lastStudied.js';
+import spacedRepetitionRoutes from './routes/spacedRepetition.js';
 
 // Load environment variables
 dotenv.config();
@@ -32,7 +32,7 @@ app.get('/health', (req, res) => {
 app.use('/api/domains', domainsRoutes);
 app.use('/api/topics', topicsRoutes);
 app.use('/api/sessions', sessionsRoutes);
-app.use('/api/last-studied', lastStudiedRoutes);
+app.use('/api/spaced-repetition', spacedRepetitionRoutes);
 
 // 404 handler
 app.use((req, res) => {

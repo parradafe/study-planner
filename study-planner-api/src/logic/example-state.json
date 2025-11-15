@@ -1,0 +1,95 @@
+{
+  "topics": [
+    {
+      "name": "Redes",
+      "lastReviewed": "2025-11-15T05:00:00.000Z",
+      "difficultyScore": 0.35,
+      "interval": 2,
+      "nextReviewDate": "2025-11-17T05:00:00.000Z",
+      "reviewCount": 1,
+      "createdAt": "2025-11-15T05:00:00.000Z"
+    },
+    {
+      "name": "Estructuras de datos",
+      "lastReviewed": null,
+      "difficultyScore": 0.5,
+      "interval": 1,
+      "nextReviewDate": "2025-11-15T05:00:00.000Z",
+      "reviewCount": 0,
+      "createdAt": "2025-11-15T05:00:00.000Z"
+    },
+    {
+      "name": "AWS",
+      "lastReviewed": "2025-11-15T05:00:00.000Z",
+      "difficultyScore": 0.7,
+      "interval": 1,
+      "nextReviewDate": "2025-11-16T05:00:00.000Z",
+      "reviewCount": 1,
+      "createdAt": "2025-11-15T05:00:00.000Z"
+    },
+    {
+      "name": "Microservicios",
+      "lastReviewed": null,
+      "difficultyScore": 0.5,
+      "interval": 1,
+      "nextReviewDate": "2025-11-15T05:00:00.000Z",
+      "reviewCount": 0,
+      "createdAt": "2025-11-15T05:00:00.000Z"
+    },
+    {
+      "name": "Docker",
+      "lastReviewed": "2025-11-15T05:00:00.000Z",
+      "difficultyScore": 0.475,
+      "interval": 1,
+      "nextReviewDate": "2025-11-16T05:00:00.000Z",
+      "reviewCount": 1,
+      "createdAt": "2025-11-15T05:00:00.000Z"
+    },
+    {
+      "name": "Kubernetes",
+      "lastReviewed": null,
+      "difficultyScore": 0.5,
+      "interval": 1,
+      "nextReviewDate": "2025-11-15T05:00:00.000Z",
+      "reviewCount": 0,
+      "createdAt": "2025-11-15T05:00:00.000Z"
+    },
+    {
+      "name": "PostgreSQL",
+      "lastReviewed": null,
+      "difficultyScore": 0.5,
+      "interval": 1,
+      "nextReviewDate": "2025-11-15T05:00:00.000Z",
+      "reviewCount": 0,
+      "createdAt": "2025-11-15T05:00:00.000Z"
+    },
+    {
+      "name": "React",
+      "lastReviewed": null,
+      "difficultyScore": 0.5,
+      "interval": 1,
+      "nextReviewDate": "2025-11-15T05:00:00.000Z",
+      "reviewCount": 0,
+      "createdAt": "2025-11-15T05:00:00.000Z"
+    },
+    {
+      "name": "Node.js",
+      "lastReviewed": null,
+      "difficultyScore": 0.5,
+      "interval": 1,
+      "nextReviewDate": "2025-11-15T05:00:00.000Z",
+      "reviewCount": 0,
+      "createdAt": "2025-11-15T05:00:00.000Z"
+    },
+    {
+      "name": "Algoritmos",
+      "lastReviewed": null,
+      "difficultyScore": 0.5,
+      "interval": 1,
+      "nextReviewDate": "2025-11-15T05:00:00.000Z",
+      "reviewCount": 0,
+      "createdAt": "2025-11-15T05:00:00.000Z"
+    }
+  ],
+  "lastUpdated": "2025-11-15T20:53:35.556Z"
+}

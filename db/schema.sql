@@ -25,25 +25,23 @@ CREATE TABLE IF NOT EXISTS topics (
         ON DELETE CASCADE
 );
 
--- Create Sessions table
+-- Create Sessions table (compatible with SpacedRepetitionEngine)
 CREATE TABLE IF NOT EXISTS sessions (
     id SERIAL PRIMARY KEY,
-    time VARCHAR(50) NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    completed BOOLEAN DEFAULT FALSE,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    last_reviewed TIMESTAMP DEFAULT NULL,
+    difficulty_score DECIMAL(3,2) DEFAULT 0.5 CHECK (difficulty_score >= 0 AND difficulty_score <= 1),
+    interval INTEGER DEFAULT 1 CHECK (interval >= 1),
+    next_review_date TIMESTAMP NOT NULL,
+    review_count INTEGER DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create Last Studied table
-CREATE TABLE IF NOT EXISTS last_studied (
-    id SERIAL PRIMARY KEY,
-    time VARCHAR(50) NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    completed BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- Create index for better query performance
+CREATE INDEX IF NOT EXISTS idx_topics_domain_id ON topics(domain_id);
+CREATE INDEX IF NOT EXISTS idx_sessions_next_review_date ON sessions(next_review_date);
+CREATE INDEX IF NOT EXISTS idx_sessions_name ON sessions(name);
 
 -- Insert sample data
 INSERT INTO domains (time, title, completed) VALUES
@@ -61,13 +59,8 @@ INSERT INTO topics (domain_id, time, title, completed) VALUES
     (3, '14:45', 'Draft outline', true)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO sessions (time, title, completed) VALUES
-    ('08:00', 'Morning study', false),
-    ('14:00', 'Practice exercises', true)
-ON CONFLICT DO NOTHING;
-
-INSERT INTO last_studied (time, title, completed) VALUES
-    ('Yesterday', 'Algorithm complexity', true),
-    ('2 days ago', 'Database design', true),
-    ('1 week ago', 'CSS Grid layout', true)
-ON CONFLICT DO NOTHING;
+INSERT INTO sessions (name, last_reviewed, difficulty_score, interval, next_review_date, review_count) VALUES
+    ('Algorithm Analysis', NULL, 0.5, 1, CURRENT_TIMESTAMP, 0),
+    ('Database Design', CURRENT_TIMESTAMP - INTERVAL '2 days', 0.35, 2, CURRENT_TIMESTAMP + INTERVAL '2 days', 1),
+    ('System Architecture', CURRENT_TIMESTAMP - INTERVAL '1 day', 0.7, 1, CURRENT_TIMESTAMP + INTERVAL '1 day', 1)
+ON CONFLICT (name) DO NOTHING;
